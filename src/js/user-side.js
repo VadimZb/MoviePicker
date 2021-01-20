@@ -1,143 +1,154 @@
 window.addEventListener("load", () => {
     const $titleInput = document.getElementById("titleInput");
-    const $movieCard = document.getElementById('movieCard')
-    const $errorCard = document.getElementById('errorCard')
+    const $movieCard = document.getElementById("movieCard");
+    const $errorCard = document.getElementById("errorCard");
+    const $loader = document.getElementById("loader");
     const socket = io();
 
-    window.addEventListener('keypress', (e) => {
-        $titleInput.focus()
-    })
+    window.addEventListener("keypress", (e) => {
+        $titleInput.focus();
+    });
 
     document.getElementById("titleForm").addEventListener("submit", (e) => {
         e.preventDefault();
         if ($titleInput.value.replace(/\s/g, "")) {
             getMovie($titleInput.value);
         }
-        $titleInput.value = ''
+        $titleInput.value = "";
     });
 
     document.getElementById("findButton").addEventListener("click", () => {
         if ($titleInput.value.replace(/\s/g, "")) {
             getMovie($titleInput.value);
         }
-        $titleInput.value = ''
+        $titleInput.value = "";
     });
 
     document.getElementById("randomMovieBtn").addEventListener("click", () => {
-        randomMovie()
-    })
+        randomMovie();
+    });
 
-    document.getElementById('darkThemeBtn').addEventListener('click', () => {
-        darkTheme()
-    })
+    document.getElementById("darkThemeBtn").addEventListener("click", () => {
+        darkTheme();
+    });
+
 
     function getMovie(title) {
+        $errorCard.style.display = "none";
+        $movieCard.style.display = "none";
+        $loader.style.display = "flex"
         socket.emit("movie request", title);
     }
 
     function displayMovie(obj) {
-        
         document.getElementById("movieTitle").textContent = obj.Title;
         document.getElementById("movieYear").textContent = obj.Year;
-        document.getElementById("movieCountry").textContent = obj.Country.split(', ')[0];
-        
+        document.getElementById("movieCountry").textContent = obj.Country.split(
+            ", "
+        )[0];
+
         document.getElementById("movieRuntime").textContent = obj.Runtime;
-        
+
         document.getElementById("movieDirector").textContent = obj.Director;
-        
+
         document.getElementById("movieActors").textContent = obj.Actors;
-        
+
         if (obj.Plot !== "N/A") {
             document.getElementById("moviePlot").textContent = `"${obj.Plot}"`;
         } else {
             document.getElementById("moviePlot").textContent = "";
         }
 
-        if (obj.Awards !== 'N/A') {
+        if (obj.Awards !== "N/A") {
             document.getElementById("movieAwards").textContent = obj.Awards;
         } else {
-            document.getElementById("movieAwards").textContent = ''
+            document.getElementById("movieAwards").textContent = "";
         }
 
-        if (obj.Writer !== 'N/A') {
+        if (obj.Writer !== "N/A") {
             document.getElementById("movieWriter").textContent = obj.Writer;
         } else {
-            document.getElementById("movieWriter").textContent = obj.Director
+            document.getElementById("movieWriter").textContent = obj.Director;
         }
 
-        if (obj.Genre !== 'N/A') {
+        if (obj.Genre !== "N/A") {
             document.getElementById("movieGenre").textContent = obj.Genre;
         } else {
-            document.getElementById("movieGenre").textContent = 'Unknown genre';
+            document.getElementById("movieGenre").textContent = "Unknown genre";
         }
 
-        if (obj.Poster !== 'N/A') {
+        if (obj.Poster !== "N/A") {
             document.getElementById("moviePoster").src = obj.Poster;
         } else {
-            document.getElementById("moviePoster").src = '../img/noposter.jpg'
+            document.getElementById("moviePoster").src = "../img/noposter.jpg";
         }
 
-        if (obj.imdbRating !== 'N/A') {
-            document.getElementById("movieRating").textContent = obj.imdbRating
+        if (obj.imdbRating !== "N/A") {
+            document.getElementById("movieRating").textContent = obj.imdbRating;
         } else {
-            document.getElementById("movieRating").textContent = '?'
+            document.getElementById("movieRating").textContent = "?";
         }
 
-        $errorCard.style.display = "none"
-        $movieCard.style.display = "flex"
-
+        $loader.style.display = "none"
+        $movieCard.style.display = "flex";
     }
 
     function randomMovie() {
-        socket.emit("random movie request")
+        $movieCard.style.display = "none";
+        $errorCard.style.display = "none";
+        $loader.style.display = "flex"
+        socket.emit("random movie request");
     }
 
-    randomMovie()
+    randomMovie();
 
-    let darkThemeTurnedOn = false
+    let darkThemeTurnedOn = false;
     function darkTheme() {
-        const btns = document.querySelectorAll(".btn")
-        const inputs = document.querySelectorAll("input")
+        const btns = document.querySelectorAll(".btn");
+        const inputs = document.querySelectorAll("input");
         if (darkThemeTurnedOn) {
-            document.body.removeAttribute("style")
-            $movieCard.classList.remove('bg-dark')
+            document.body.style.color = "";
+            document.body.style.background = "";
+            $movieCard.classList.remove("bg-dark");
             for (let btn of btns) {
-                btn.classList.remove("btn-dark")
+                btn.classList.remove("btn-dark");
             }
 
             for (let input of inputs) {
-                input.classList.remove("bg-dark")
-                input.removeAttribute("style")
+                input.classList.remove("bg-dark");
+                input.style.color = "";
+                input.style.border = "";
             }
         } else {
-            document.body.style.color = "white"
-            document.body.style.background = "#121517"
-            $movieCard.classList.add('bg-dark')
+            document.body.style.color = "white";
+            document.body.style.background = "#121517";
+            $movieCard.classList.add("bg-dark");
             for (let btn of btns) {
-                btn.classList.add("btn-dark")
+                btn.classList.add("btn-dark");
             }
 
             for (let input of inputs) {
-                input.classList.add("bg-dark")
-                input.style.color = "white"
-                input.style.border = "none"
+                input.classList.add("bg-dark");
+                input.style.color = "white";
+                input.style.border = "none";
             }
         }
 
-        darkThemeTurnedOn = !darkThemeTurnedOn
+        darkThemeTurnedOn = !darkThemeTurnedOn;
     }
 
     function displayError(errorMessage) {
-        $movieCard.style.display = "none"
-        $errorCard.style.display = "flex"
-        document.getElementById("errorMsg").textContent = errorMessage
+        $movieCard.style.display = "none";
+        $errorCard.style.display = "flex";
+        $loader.style.display = "none"
+        document.getElementById("errorMsg").textContent = errorMessage;
     }
 
     socket.on("movie fetched", (movieObj) => {
         if (movieObj.Response === "True") {
             displayMovie(movieObj);
         } else {
-            displayError(movieObj.Error)
+            displayError(movieObj.Error);
         }
     });
 });
