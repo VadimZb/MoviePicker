@@ -42,11 +42,16 @@ window.addEventListener("load", () => {
         document.getElementById("movieCountry").textContent = obj.Country.split(', ')[0];
         
         document.getElementById("movieRuntime").textContent = obj.Runtime;
-        document.getElementById("moviePlot").textContent = obj.Plot;
+        
         document.getElementById("movieDirector").textContent = obj.Director;
         
         document.getElementById("movieActors").textContent = obj.Actors;
         
+        if (obj.Plot !== "N/A") {
+            document.getElementById("moviePlot").textContent = `"${obj.Plot}"`;
+        } else {
+            document.getElementById("moviePlot").textContent = "";
+        }
 
         if (obj.Awards !== 'N/A') {
             document.getElementById("movieAwards").textContent = obj.Awards;
@@ -125,7 +130,7 @@ window.addEventListener("load", () => {
     function displayError(errorMessage) {
         $movieCard.style.display = "none"
         $errorCard.style.display = "flex"
-        $errorCard.textContent = errorMessage
+        document.getElementById("errorMsg").textContent = errorMessage
     }
 
     socket.on("movie fetched", (movieObj) => {
