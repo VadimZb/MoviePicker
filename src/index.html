@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Movie Finder</title>
+        <link
+            rel="stylesheet"
+            href="stylesheets/bootstrap/css/bootstrap.min.css"
+        />
+        <link rel="stylesheet" href="stylesheets/style.css">
+        <script src="stylesheets/bootstrap/js/bootstrap.min.js" defer></script>
+        <script
+            src="https://kit.fontawesome.com/67609500f8.js"
+            crossorigin="anonymous"
+        ></script>
+        <script src="/socket.io/socket.io.js" defer></script>
+        <script src="js/user-side.js" defer></script>
+    </head>
+    <body>
+        <div class="container pt-4">
+            <div class="d-flex justify-content-center align-items-center mb-2">
+                <h1 class="m-0">Movie App</h1>
+            </div>
+            <form
+                class="d-flex justify-content-center align-items-center flex-column"
+                id="titleForm"
+            >
+                <div
+                    class="btn-group container-fluid px-0 my-3"
+                    role="group"
+                    aria-label="Basic outlined example"
+                    style="transition: 0.3s;"
+                >
+                    <a type="button" href="https://github.com/VadimZb" target="_blank" class="btn btn-secondary" title="Github profile">
+                        <i class="fab fa-github"></i>
+                    </a>
+                    <button type="button" class="btn btn-secondary" id="randomMovieBtn" title="Random movie">
+                        <i class="fas fa-dice"></i>
+                    </button>
+                    <button type="button" class="btn btn-secondary" id="darkThemeBtn" title="Dark theme">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                </div>
+
+                <div class="input-group input-group-lg">
+                    <input
+                        type="text"
+                        class="form-control"
+                        placeholder="Movie title..."
+                        aria-label="Movie title"
+                        id="titleInput"
+                        autocomplete="off"
+                    />
+                    <button
+                        class="btn btn-outline-secondary"
+                        type="button"
+                        id="findButton"
+                    >
+                        Find
+                    </button>
+                </div>
+            </form>
+            <div class="d-flex justify-content-center align-items-center mt-3">
+                <div
+                    class="alert alert-danger"
+                    role="alert"
+                    style="display: none"
+                    id="errorCard"
+                ></div>
+                <div
+                    class="card mb-3 container-fluid p-0"
+                    style="overflow: hidden; display: none"
+                    id="movieCard"
+                >
+                    <div class="row g-0">
+                        <div class="col-md-4">
+                            <img
+                                src="https://m.media-amazon.com/images/M/MV5BMDdmZGU3NDQtY2E5My00ZTliLWIzOTUtMTY4ZGI1YjdiNjk3XkEyXkFqcGdeQXVyNTA4NzY1MzY@._V1_SX300.jpg"
+                                alt="Mive poster"
+                                style="width: 100%"
+                                id="moviePoster"
+                            />
+                        </div>
+                        <div class="col-md-8">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between">
+                                    <div>
+                                        <h5
+                                            class="card-title fw-bold"
+                                            id="movieTitle"
+                                        >
+                                            Title
+                                        </h5>
+                                    </div>
+                                    <div class="text-muted">
+                                        <span id="movieYear">9999</span>,
+                                        <span id="movieCountry">Country</span>
+                                    </div>
+                                </div>
+
+                                <div class="text-muted">
+                                    <span id="movieGenre">Jenres</span>
+                                </div>
+                                <div
+                                    class="d-flex text-muted justify-content-between"
+                                >
+                                    <div>
+                                        <span id="movieRuntime">999 mins</span>
+                                    </div>
+
+                                    <div>
+                                        <span class="fw-bold" id="movieRating"
+                                            >9.9</span
+                                        >
+                                        / 10 <i class="far fa-star"></i>
+                                    </div>
+                                </div>
+
+                                <p class="card-text mt-3" id="moviePlot">
+                                    "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Laudantium assumenda ea, neque repudiandae aspernatur distinctio ipsa. Natus saepe culpa qui praesentium, numquam id voluptatem temporibus vitae voluptatibus eligendi reiciendis voluptas."
+                                </p>
+                                <p class="card-text" id="movieAwards">
+                                    dolor sit consectetur
+                                </p>
+                                <p class="card-text">
+                                    <span class="fw-bold">Director:</span>
+                                    <span id="movieDirector"
+                                        >sample name</span
+                                    >
+                                </p>
+                                <p class="card-text">
+                                    <span class="fw-bold">Writer:</span>
+                                    <span id="movieWriter">sample name</span>
+                                </p>
+                                <p class="card-text">
+                                    <span class="fw-bold">Actors:</span>
+                                    <span id="movieActors"
+                                        >name1, name2, name3</span
+                                    >
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
